@@ -15,3 +15,25 @@ exports.addBook = async (req, res) => {
         res.status(500).json({ message: err.message }); 
     }
 };
+
+exports.getBookById = async (req, res) => {
+    const book = await Book.findByPk(req.params.id);
+    if (!book) return res.status(404).json({ message: "Buku tidak ditemukan" });
+    res.json(book);
+};
+
+exports.updateBook = async (req, res) => {
+    const book = await Book.findByPk(req.params.id);
+    if (!book) return res.status(404).json({ message: "Buku tidak ditemukan" });
+    
+    await book.update(req.body);
+    res.json({ message: "Buku diperbarui", book });
+};
+
+exports.deleteBook = async (req, res) => {
+    const book = await Book.findByPk(req.params.id);
+    if (!book) return res.status(404).json({ message: "Buku tidak ditemukan" });
+    
+    await book.destroy();
+    res.json({ message: "Buku berhasil dihapus" });
+};
